@@ -1,49 +1,32 @@
-var btn = document.getElementById("myButton");
- var check = document.querySelector(".check");  
+var statuss = document.querySelector(".status");
+var full = document.querySelector(".fullimg"); 
+var growth = document.querySelector("#growth");
+var close = document.querySelector("#close");
+var grow = 0;
+var timer;
+var timee;
 
- var quotes =[
-  {
-    "team_name": "Chennai Super Kings",
-    "captain": "Ruturaj Gaikwad",
-    "team_color": "#FFFF00",
-    "cups_won": 5
-  },
-  {
-    "team_name": "Mumbai Indians",
-    "captain": "Hardik Pandya",
-    "team_color": " #0000FF;",
-    "cups_won": 5
-  },
-  {
-    "team_name": "Kolkata Knight Riders",
-    "captain": "Shreyas Iyer",
-    "team_color": "#49004B",
-    "cups_won": 2
-  },
-  {
-    "team_name": "Royal Challengers Bengaluru",
-    "captain": "Rajat Patidar",
-    "team_color": "#CB0D13",
-    "cups_won": 0
-  },
-  {
-    "team_name": "Delhi Capitals",
-    "captain": "Axar Patel",
-    "team_color": "#ADD8E6",
-    "cups_won": 0
-  }
-]
- btn.addEventListener("click", function(){
+statuss.addEventListener("click", function(){
+    full.style.display = "block";
     
-    var randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-    check.style.backgroundColor = randomQuote.team_color;
-    check.style.fontSize = "45px";
+    timer =  setInterval(function(){
+       growth.style.width = grow +"%";
+       grow++;
+    console.log(grow);
+
+     },30)
+     
+    timee = setTimeout(function(){
+        full.style.display = "none";
+        clearInterval(timer);
+     },3000)
+})
+
+close.addEventListener("click", function(){
+   full.style.display = "none";
+   clearInterval(timer);
+   clearTimeout(timee);
+   grow = 0;
+})
 
 
-    check.innerHTML = `
-    <p>${randomQuote.team_name} ${<span> </span>}   </p> -> 
-    <p>Captain: ${randomQuote.captain}</p>
-
-    <p>Cups Won: ${randomQuote.cups_won }</p>`;
-    
- } )
