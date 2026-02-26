@@ -1,32 +1,18 @@
-var statuss = document.querySelector(".status");
-var full = document.querySelector(".fullimg"); 
-var growth = document.querySelector("#growth");
-var close = document.querySelector("#close");
-var grow = 0;
-var timer;
-var timee;
+var body = document.querySelector("body")
 
-statuss.addEventListener("click", function(){
-    full.style.display = "block";
-    
-    timer =  setInterval(function(){
-       growth.style.width = grow +"%";
-       grow++;
-    console.log(grow);
+var nav = document.querySelector("nav")
 
-     },30)
-     
-    timee = setTimeout(function(){
-        full.style.display = "none";
-        clearInterval(timer);
-     },3000)
+body.addEventListener('wheel', function(e){
+     if(e.deltaY>0){
+        nav.style.transform = 'translateY(-100%)'
+
+        console.log("seedha scrolling")
+     }
+      else{
+        console.log("ulta scrolling");
+        nav.style.transform = 'translateY(0)'
+     }
+
+
 })
-
-close.addEventListener("click", function(){
-   full.style.display = "none";
-   clearInterval(timer);
-   clearTimeout(timee);
-   grow = 0;
-})
-
 
