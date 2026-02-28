@@ -1,18 +1,78 @@
-var body = document.querySelector("body")
+const inventory = [
+    {
+        productName: "Amul Milk 500ml",
+        category: "Dairy",
+        sellingPrice: 28,
+        quantityInStock: 120,
+        expiryDate: "2026-03-02"
+    },
+    {
+        productName: "Tata Sampann Toor Dal 1kg",
+        category: "Groceries",
+        sellingPrice: 165,
+        quantityInStock: 60,
+        expiryDate: "2026-08-15"
+    },
+    {
+        productName: "Lay's Classic Chips 50g",
+        category: "Snacks",
+        sellingPrice: 20,
+        quantityInStock: 200,
+        expiryDate: "2026-06-10"
+    },
+];
 
-var nav = document.querySelector("nav")
 
-body.addEventListener('wheel', function(e){
-     if(e.deltaY>0){
-        nav.style.transform = 'translateY(-100%)'
+var form = document.querySelector('form')
+var alldata = document.querySelector('.all-data')
 
-        console.log("seedha scrolling")
+ function printData(){
+var sum = ' '
+
+inventory.forEach(function(elem, idx){
+
+      sum += `<div class="item">
+                <h3>${elem.productName}</h3>
+                <h4>Category : <span>${elem.category}</span></h4>
+                <h4>Price : <span>${elem.sellingPrice}</span></h4>
+                <h4>Quantity: <span>${elem.quantityInStock}</span></h4>
+                <h4>Expiry Date : <span>${elem.expiryDate}</span></h4>
+                <div>
+                    <button>Edit</button>
+                    <button id="${idx}">Remove</button>
+                </div>
+            </div>    `
+                
+                })
+            // move innerHTML update outside the loop
+            alldata.innerHTML = sum; //adding html element to sum
+
+      }
+ printData();
+
+form.addEventListener('submit', function(elem){
+     elem.preventDefault()
+      
+     var NewProduct ={      //creation a object and storing value
+        productName: form.childNodes[1].value,
+        category: form.childNodes[3].value,
+        sellingPrice: form.childNodes[5].value,
+        quantityInStock: form.childNodes[7].value,
+        expiryDate: form.childNodes[9].value
+     
      }
-      else{
-        console.log("ulta scrolling");
-        nav.style.transform = 'translateY(0)'
-     }
+    
 
-
+     inventory.push(NewProduct);  //new product added to inventory    
 })
+ printData();
+
+
+   alldata.addEventListener('click', function(elem){
+       if (elem.target.id && elem.target.innerHTML == "Remove") {
+            inventory.splice(elem.target.id, 1);
+            printData();
+          }
+  })
+
 
