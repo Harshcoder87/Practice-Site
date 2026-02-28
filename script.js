@@ -22,57 +22,87 @@ const inventory = [
     },
 ];
 
+var form = document.querySelector('form');
+var alldata = document.querySelector('.all-data');
 
-var form = document.querySelector('form')
-var alldata = document.querySelector('.all-data')
+let editIndex = null;
 
- function printData(){
-var sum = ' '
+// 🔹 Render Function or it means printing the the div box
+function printData() {
+    var sum = "";
 
-inventory.forEach(function(elem, idx){
-
-      sum += `<div class="item">
+    inventory.forEach(function(elem, idx) {
+        sum += `
+            <div class="item">
                 <h3>${elem.productName}</h3>
                 <h4>Category : <span>${elem.category}</span></h4>
                 <h4>Price : <span>${elem.sellingPrice}</span></h4>
                 <h4>Quantity: <span>${elem.quantityInStock}</span></h4>
                 <h4>Expiry Date : <span>${elem.expiryDate}</span></h4>
                 <div>
-                    <button>Edit</button>
-                    <button id="${idx}">Remove</button>
+                    <button class="edit" data-id="${idx}">Edit</button>
+                    <button class="remove" data-id="${idx}">Remove</button>
                 </div>
-            </div>    `
-                
-                })
-            // move innerHTML update outside the loop
-            alldata.innerHTML = sum; //adding html element to sum
+            </div>
+        `;
+    });
 
-      }
- printData();
+    alldata.innerHTML = sum;
+}
 
-form.addEventListener('submit', function(elem){
-     elem.preventDefault()
-      
-     var NewProduct ={      //creation a object and storing value
-        productName: form.childNodes[1].value,
-        category: form.childNodes[3].value,
-        sellingPrice: form.childNodes[5].value,
-        quantityInStock: form.childNodes[7].value,
-        expiryDate: form.childNodes[9].value
-     
-     }
-    
+printData();
 
-     inventory.push(NewProduct);  //new product added to inventory    
-})
- printData();
+// 🔹 Submit (Add + Edit)
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var NewProduct = {
+        productName: form.elements.productName.value,
+        category: form.elements.category.value,
+        sellingPrice: form.elements.sellingPrice.value,
+        quantityInStock: form.elements.quantityInStock.value,
+        expiryDate: form.elements.expiryDate.value
+    };
+
+    if (editIndex !== null) {
+        // UPDATE
+        inventory[editIndex] = NewProduct;
+        editIndex = null;     //again keeping index as null
+    } else {
+        // ADD
+        inventory.push(NewProduct);
+    }
+
+    form.reset();
+    printData();
+});
+
+// 🔹 Edit & Remove Click
+alldata.addEventListener('click', function(e) {
+
+    // REMOVE
+    if (e.target.classList.contains("remove")) {
+        const index = e.target.dataset.id;
+        inventory.splice(index, 1);
+        printData();
+    }
+
+    // EDIT
+    if (e.target.classList.contains("edit")) {
+        const index = e.target.dataset.id;
+        console.log(index);
+
+        const item = inventory[index];
+        console.log(item);
 
 
-   alldata.addEventListener('click', function(elem){
-       if (elem.target.id && elem.target.innerHTML == "Remove") {
-            inventory.splice(elem.target.id, 1);
-            printData();
-          }
-  })
+        form.elements.productName.value = item.productName;
+        form.elements.category.value = item.category;
+        form.elements.sellingPrice.value = item.sellingPrice;
+        form.elements.quantityInStock.value = item.quantityInStock;
+        form.elements.expiryDate.value = item.expiryDate;
 
+        editIndex = index;
+    }
 
+});
